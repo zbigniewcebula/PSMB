@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "restore": {
+    "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj": {}
+  },
+  "projects": {
+    "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj",
+        "projectName": "RayLib-PSMB",
+        "projectPath": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj",
+        "packagesPath": "C:\\Users\\zbigniew\\.nuget\\packages\\",
+        "outputPath": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\zbigniew\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "A:\\GIT\\TiledSharp\\TiledSharp\\TiledSharp.csproj": {
+                "projectPath": "A:\\GIT\\TiledSharp\\TiledSharp\\TiledSharp.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Raylib-cs": {
+              "target": "Package",
+              "version": "[7.0.2, )"
+            },
+            "rlImgui-cs": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "A:\\GIT\\TiledSharp\\TiledSharp\\TiledSharp.csproj": {
+      "restore": {
+        "projectUniqueName": "A:\\GIT\\TiledSharp\\TiledSharp\\TiledSharp.csproj",
+        "projectName": "TiledSharp",
+        "projectPath": "A:\\GIT\\TiledSharp\\TiledSharp\\TiledSharp.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net471": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net471": {}
+      }
+    }
+  }
+}

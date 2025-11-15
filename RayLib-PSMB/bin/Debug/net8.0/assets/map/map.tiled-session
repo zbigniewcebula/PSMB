@@ -1,0 +1,89 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map01.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "REFERENCES.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "REFERENCESp.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.33
+        },
+        "background.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 11
+        },
+        "foreground.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 4,
+            "scaleInEditor": 11
+        },
+        "map01.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 210.25,
+                "y": 232.75
+            }
+        },
+        "map01.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 5.5,
+            "scaleInEditor": 8
+        },
+        "overworld.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 2,
+            "scaleInEditor": 0.75
+        },
+        "temp.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 11
+        },
+        "underground.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 3
+        }
+    },
+    "last.externalTilesetPath": "A:/GIT/PSMB/Raylib/RayLib-PSMB/bin/Debug/net8.0/assets/map",
+    "last.imagePath": "A:/GIT/PSMB/Raylib/RayLib-PSMB/bin/Debug/net8.0/assets/map",
+    "map.height": 14,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 211,
+    "openFiles": [
+        "map01.tmx",
+        "overworld.tsx"
+    ],
+    "project": "map.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "overworld.tsx",
+        "map01.tmx",
+        "REFERENCESp.tsx",
+        "foreground.tsx",
+        "temp.tsx",
+        "background.tsx",
+        "map01.tsx"
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.type": 0
+}
