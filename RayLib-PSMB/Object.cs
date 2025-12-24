@@ -6,7 +6,7 @@ namespace PSMB
 	public class Object : IEnumerable<Object>
 	{
 		public static IReadOnlyList<Object> All => all; 
-		private static List<Object> all = new(); 
+		protected static List<Object> all = new(); 
 		
 		public string Name { get; set; }
 		public string Tag { get; set; }
@@ -15,9 +15,16 @@ namespace PSMB
 
 		public bool Active
 		{
-			get => active; set => OnActiveChanged?.Invoke(active = value);
+			get => active;
+			set
+			{
+				if(active != value)
+				{
+					OnActiveChanged?.Invoke(active = value);
+				}
+			}
 		}
-		
+
 		public Vector2 Position
 		{
 			get => GetGlobalPosition(); set => SetGlobalPosition(value);
@@ -32,17 +39,34 @@ namespace PSMB
 		{
 			get => GetGlobalScale(); set => SetGlobalScale(value);
 		}
+
+		public Vector2 LocalPosition
+		{
+			get => localPosition;
+			set
+			{
+				if(value != localPosition)
+				{
+					OnPositionChanged?.Invoke(localPosition, value);
+					localPosition = value;
+				}
+			}
+		}
+		private Vector2 localPosition = Vector2.Zero;
 		
-		public Vector2 LocalPosition { get; set; } = Vector2.Zero;
 		public float LocalRotation { get; set; } = 0f;
 		public Vector2 LocalScale { get; set; } = Vector2.One;
 		
 		public int ChildCount => children.Count;
 
 		public event Action<bool> OnActiveChanged;
-		public event Action<Object> OnParentChanged;
+		public event Action<Object, Object> OnParentChanged;
 		public event Action<Component> OnComponentAdded;
 		public event Action<Component> OnComponentRemoved;
+		
+		public event Action<Vector2, Vector2> OnPositionChanged;
+		public event Action<Vector2, Vector2> OnScaleChanged;
+		public event Action<float, float> OnRotationChanged;
 		
 		private Object parent = null;
 		
@@ -69,6 +93,7 @@ namespace PSMB
 				return;
 			}
 
+			var oldParent = parent;
 			if(parent != null)
 			{
 				parent.RemoveChild(this);
@@ -76,7 +101,7 @@ namespace PSMB
 			newParent.AddChild(this);
 			
 			parent = newParent;
-			OnParentChanged?.Invoke(newParent);
+			OnParentChanged?.Invoke(oldParent, newParent);
 		}
 
 		private void AddChild(Object child)
@@ -94,7 +119,8 @@ namespace PSMB
 			var component = Component.Factory<T>.Create(this);
 			components.Add(component);
 			OnComponentAdded?.Invoke(component);
-
+			
+			component.OnCreate();
 			return component;
 		}
 
@@ -106,6 +132,13 @@ namespace PSMB
 				OnComponentRemoved?.Invoke(component);
 			}
 
+			component.OnDestroy();
+
+			component
+				.GetType()
+				.GetProperty("Parent")
+				?.SetValue(component, null, null);
+			
 			return result;
 		}
 
@@ -214,76 +247,5 @@ namespace PSMB
 
 		public IEnumerator<Object> GetEnumerator() => children.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-	}
-	
-	public static class ObjectUtils
-	{
-		public static void RenderAll(Renderer renderer)
-		{
-			var viewport = renderer.GetViewport();
-			var renderable = Object.All
-								.Where(IsInViewport)
-								.SelectMany(o => o.GetAllComponents<IRenderable>());
-			
-			foreach(var obj in renderable)
-			{
-				obj.Render(renderer);
-			}
-
-			return;
-
-			bool IsInViewport(Object o)
-			{
-				return o.Position.X > (viewport.Position.X - viewport.Width / 10)
-					&& o.Position.X < (viewport.Position.X + viewport.Width);
-			}
-		}
-		public static void RenderDebugAll(Renderer renderer)
-		{
-			var viewport = renderer.GetViewport();
-			var renderable = Object.All.Where(o => 
-				o.Position.X > viewport.Position.X
-				&& o.Position.X < viewport.Width
-			).SelectMany(o => o.GetAllComponents<IRenderable>());
-			
-			foreach(var obj in renderable)
-			{
-				obj.RenderDebug(renderer);
-			}
-		}
-
-		public static void UpdateAll(float delta)
-		{
-			var updatable = GetObjectsWithComponent<IUpdatable>();
-			foreach(var obj in updatable)
-			{
-				obj.Update(delta);
-			}
-		}
-		
-		public static IEnumerable<T> GetObjectsWithComponent<T>()
-		{
-			HashSet<T> components = new();
-			foreach(var obj in Object.All)
-			{
-				components.UnionWith(GatherComponents<T>(obj));
-			}
-			
-			return components;
-
-			IEnumerable<K> GatherComponents<K>(Object parent)
-			{
-				HashSet<K> childComponents = new(parent.GetAllComponents<K>());
-				if(parent.ChildCount > 0)
-				{
-					foreach(var child in parent)
-					{
-						childComponents.UnionWith(GatherComponents<K>(child));
-					}
-				}
-
-				return childComponents;
-			}
-		}
 	}
 }

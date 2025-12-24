@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "Box2D.NetStandard/2.4.7-alpha": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Box2D.NetStandard.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Box2D.NetStandard.dll": {}
+        }
+      },
       "ImGui.NET/1.91.6.1": {
         "type": "package",
         "dependencies": {
@@ -136,6 +145,18 @@
     }
   },
   "libraries": {
+    "Box2D.NetStandard/2.4.7-alpha": {
+      "sha512": "TmBDWLZHx8bHSkWxIrtVZYLABXIiTu81/1W3mnaVrOba6vqy0GcM/hGJV9gDJ0TZi2QCmoiygrwwRbaYyKpgfw==",
+      "type": "package",
+      "path": "box2d.netstandard/2.4.7-alpha",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "box2d.netstandard.2.4.7-alpha.nupkg.sha512",
+        "box2d.netstandard.nuspec",
+        "lib/netstandard2.1/Box2D.NetStandard.dll"
+      ]
+    },
     "ImGui.NET/1.91.6.1": {
       "sha512": "Ph3j8pO6UM28PPJWP+5LEJSPVPkd8ivpVS8tRyY9b0IHn1HDIrMZ2o/FdiXaYW6YhNxMHmbevw6Jcfs+IDKi0Q==",
       "type": "package",
@@ -301,6 +322,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Box2D.NetStandard >= 2.4.7-alpha",
       "Raylib-cs >= 7.0.2",
       "TiledSharp >= 1.0.0",
       "rlImgui-cs >= 3.2.0"
@@ -314,7 +336,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj",
-      "projectName": "RayLib-PSMB",
+      "projectName": "PSMB",
       "projectPath": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj",
       "packagesPath": "C:\\Users\\zbigniew\\.nuget\\packages\\",
       "outputPath": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\obj\\",
@@ -356,6 +378,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Box2D.NetStandard": {
+            "target": "Package",
+            "version": "[2.4.7-alpha, )"
+          },
           "Raylib-cs": {
             "target": "Package",
             "version": "[7.0.2, )"

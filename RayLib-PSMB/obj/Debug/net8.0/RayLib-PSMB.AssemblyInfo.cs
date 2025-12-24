@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("RayLib-PSMB")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("PSMB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("RayLib-PSMB")]
-[assembly: System.Reflection.AssemblyTitleAttribute("RayLib-PSMB")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b80b235455134f9edea339eacf28a7411212610")]
+[assembly: System.Reflection.AssemblyProductAttribute("PSMB")]
+[assembly: System.Reflection.AssemblyTitleAttribute("PSMB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Wygenerowane przez klasę WriteCodeFragment programu MSBuild.

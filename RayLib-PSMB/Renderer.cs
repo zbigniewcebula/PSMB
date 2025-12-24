@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.Intrinsics.X86;
 using Raylib_cs;
 using Camera2D = Raylib_cs.Camera2D;
 using Color = Raylib_cs.Color;
@@ -8,76 +9,78 @@ namespace PSMB
 {
 	public class Renderer
 	{
-		private const int INITIAL_RENDER_QUEUE_SIZE = 128;
-
 		public bool Closing => closing || Raylib.WindowShouldClose();
 
-		public Camera Camera { get; private set; }
-		private Object camera = null;
+		public Camera Camera { get; set; }
 		
-		public bool FPS { get; set; } = false;
-		public bool Debug { get; set; } = false;
-		public bool IMGUIEnabled { get; set; }
+		public bool ShowFPS { get; set; } = false;
+		
 		public Vector2 Size { get; private set; }
 		
 		public Color BackgroundColor { get; set; } = Color.White;
-		
-		private RenderTexture2D renderTexture;
-		private IMGUI imgui;
 
 		private bool closing = false;
 
-		public Renderer(string windowTitle, Vector2 windowSize, int targetFPS = 60)
-		{
-			Size = windowSize;
+		public Renderer(
+			string windowTitle, Vector2 windowSize,
+			int targetFPS = 60, bool fullscreen = false
+		) {
+			Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
 			Raylib.InitWindow(
 				(int)windowSize.X, (int)windowSize.Y, windowTitle
 			);
 			Raylib.SetTargetFPS(targetFPS);
 			
-			renderTexture = Raylib.LoadRenderTexture(
-				(int)windowSize.X, (int)windowSize.Y
-			);
+			if(fullscreen)
+			{
+				Raylib.MaximizeWindow();
+				
+				windowSize = new(
+					Raylib.GetScreenWidth(), Raylib.GetScreenHeight()
+				);
+			}
 
-			camera = new("Camera");
-			Camera = camera.AddComponent<Camera>();
-			
-			imgui = new();
-
-			IMGUIEnabled   = true;
-			Camera.FreeCam = true;
+			Size = windowSize;
 		}
 
 		~Renderer()
 		{
-			imgui = null;
-			Raylib.UnloadRenderTexture(renderTexture);
 			Raylib.CloseWindow();
 		}
 
-		public void Render(float delta)
+		public void Render(float delta, Editor editor = null!)
 		{
 			Raylib.ClearBackground(BackgroundColor);
+			
 			Raylib.BeginDrawing();
-			Raylib.BeginMode2D(Camera.Camera2D);
+			if(Camera != null)
+			{
+				Raylib.BeginMode2D(Camera.Camera2D);
+			}
 			{
 				ObjectUtils.RenderAll(this);
 
-				if(Debug)
+				if(editor != null && editor.GizmosEnabled)
 				{
 					ObjectUtils.RenderDebugAll(this);
 				}
 			}
-			Raylib.EndMode2D();	
+			if(Camera != null)
+			{
+				Camera.Render(this);
+				Raylib.EndMode2D();
+			}
 			
-			if(FPS)
+			if(ShowFPS)
 			{
 				Raylib.DrawFPS(0, 0);
 			}
-			if(IMGUIEnabled)
+
+			if(editor != null)
 			{
-				imgui.Render(this, delta);
+				editor?.Render(this, delta);
 			}
+			
 			Raylib.EndDrawing();
 		}
 		
@@ -86,8 +89,10 @@ namespace PSMB
 			var cam = Camera.Camera2D;
 			
 			// 1. Screen center before applying camera offset
-			float viewWidth  = renderTexture.Texture.Width  / cam.Zoom;
-			float viewHeight = renderTexture.Texture.Height / cam.Zoom;
+			//float viewWidth  = renderTexture.Texture.Width  / cam.Zoom;
+			//float viewHeight = renderTexture.Texture.Height / cam.Zoom;
+			float viewWidth  = Size.X  / cam.Zoom;
+			float viewHeight = Size.Y / cam.Zoom;
 
 			// 2. Because target is the world-space point at screen offset,
 			//    the visible range is centered around (target - offset/zoom)
@@ -99,7 +104,78 @@ namespace PSMB
 
 		public Vector2 PointToScreenView(Vector2 point)
 		{
-			return point with {Y = renderTexture.Texture.Height - point.Y};
+			return new(
+				point.X,
+				Size.Y - point.Y
+			);
+		}
+
+		public void DrawLine(Vector2 start, Vector2 end, float thickness = 1f, Color? color = null)
+		{
+			if(color == null)
+			{
+				color = Color.White;
+			}
+			
+			start = PointToScreenView(start);
+			end   = PointToScreenView(end);
+			Raylib.DrawLineEx(
+				start, end,
+				thickness,
+				color.Value
+			);
+		}
+		
+		public void DrawRectLines(Rectangle rect, float thickness = 1f, Color? color = null)
+		{
+			if(color == null)
+			{
+				color = Color.White;
+			}
+			
+			var pos = PointToScreenView(rect.Position);
+			pos.Y -= rect.Size.Y;
+			Raylib.DrawRectangleLinesEx(
+				new(pos, rect.Size),
+				thickness,
+				color.Value
+			);
+		}
+
+		public void DrawEllipseLines(Vector2 center, Vector2 radius, Color? color = null)
+		{
+			if(color == null)
+			{
+				color = Color.White;
+			}
+			
+			var pos = PointToScreenView(center);
+			Raylib.DrawEllipseLines(
+				(int)pos.X, (int)pos.Y, 
+				radius.X,  radius.Y, 
+				color.Value
+			);
+		}
+		
+		public void DrawCircle(Vector2 center, float radius, Color? color = null)
+		{
+			DrawEllipseLines(center, new Vector2(radius, radius), color);
+		}
+
+		public void DrawText(string text, Vector2 position, int fontSize = 14, Color? color = null)
+		{
+			if(color == null)
+			{
+				color = Color.White;
+			}
+			
+			var pos = PointToScreenView(position);
+			Raylib.DrawText(
+				text, 
+				(int)pos.X, (int)pos.Y, 
+				fontSize, 
+				color.Value
+			);
 		}
 	}
 }

@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj",
-        "projectName": "RayLib-PSMB",
+        "projectName": "PSMB",
         "projectPath": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\RayLib-PSMB.csproj",
         "packagesPath": "C:\\Users\\zbigniew\\.nuget\\packages\\",
         "outputPath": "A:\\GIT\\PSMB\\PSMB\\RayLib-PSMB\\obj\\",
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Box2D.NetStandard": {
+              "target": "Package",
+              "version": "[2.4.7-alpha, )"
+            },
             "Raylib-cs": {
               "target": "Package",
               "version": "[7.0.2, )"
